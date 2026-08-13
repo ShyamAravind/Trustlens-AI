@@ -1,0 +1,28 @@
+{
+  "manifest_version": 3,
+  "name": "TrustLens AI",
+  "version": "1.0",
+  "description": "TrustLens AI is a Chrome extension that scans reviews on any shopping website and shows you whether each review is real or fake using an AI model.",
+  "permissions": ["activeTab", "scripting", "storage"],
+  "host_permissions": ["<all_urls>"],
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "TrustLens AI",
+    "default_icon": {
+      "16": "icon16.png",
+      "48": "icon48.png",
+      "128": "icon128.png"
+    }
+  }
+}
