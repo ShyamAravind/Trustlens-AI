@@ -4,9 +4,12 @@ import joblib
 import numpy as np
 from scipy.sparse import hstack, csr_matrix
 import re
+import os
 
-model = joblib.load('../model/model.pkl')
-vectorizer = joblib.load('../model/vectorizer.pkl')
+# Resolve model files relative to this file so the API works from any working directory
+MODEL_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'model')
+model = joblib.load(os.path.join(MODEL_DIR, 'model.pkl'))
+vectorizer = joblib.load(os.path.join(MODEL_DIR, 'vectorizer.pkl'))
 
 def extract_features(text):
     if not isinstance(text, str):
@@ -27,9 +30,9 @@ CORS(app)
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    data   = request.get_json()
+    data   = request.get_json(silent=True) or {}
     review = data.get('review', '')
-    if not review:
+    if not isinstance(review, str) or not review.strip():
         return jsonify({'error': 'No review provided'}), 400
 
     tfidf_vec = vectorizer.transform([review])

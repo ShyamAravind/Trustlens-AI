@@ -103,6 +103,13 @@ function findReviewsHeuristically() {
 window.trustlensResults = [];
 const trustlensCounts = { real: 0, suspicious: 0, fake: 0 };
 
+// Reset stored counts on every page load so the popup never shows
+// results left over from a previously visited page
+chrome.storage.local.set({
+  trustlensCounts: { ...trustlensCounts },
+  trustlensTotal: 0
+});
+
 // ── 5. Score helpers ─────────────────────────────────────────
 function getRealScore(fake_prob) {
   return Math.round(100 - fake_prob);
